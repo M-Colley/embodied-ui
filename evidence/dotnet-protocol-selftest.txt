@@ -1,0 +1,14 @@
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+ok   message type survives framing
+ok   frame number
+ok   NaN travels as null
+ok   attachment bytes
+ok   descriptors are consumed
+ok   step request
+ok   controls and null
+ok   events
+ok   major version mismatch is rejected
+ok   oversized frames are rejected
+all protocol self-tests passed

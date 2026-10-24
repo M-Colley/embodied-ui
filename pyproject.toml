@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "embodied-ui"
+version = "0.1.0"
+description = "Physical user interfaces for MuJoCo bodies, bridged in lockstep to Unity, CARLA and other engines"
+authors = [{ name = "Mark Colley" }]
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+dependencies = ["numpy>=1.24", "mujoco>=3.7"]
+keywords = ["mujoco", "myosuite", "unity", "carla", "hci", "simulated users", "biomechanics"]
+
+[project.urls]
+Homepage = "https://github.com/M-Colley/embodied-ui"
+Repository = "https://github.com/M-Colley/embodied-ui"
+Issues = "https://github.com/M-Colley/embodied-ui/issues"
+
+[project.optional-dependencies]
+# Engine meshes and primitive fitting (geometry.load_mesh, fit_primitive).
+mesh = ["trimesh>=4", "scipy>=1.10"]
+# Gymnasium environments (embodied_ui.env).
+gym = ["gymnasium>=1.0"]
+test = ["pytest>=8", "pytest-cov>=5", "build>=1", "trimesh>=4", "scipy>=1.10", "gymnasium>=1.0"]
+lint = ["mypy>=1.15", "ruff>=0.11"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+embodied_ui = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "carla: requires an explicitly enabled running CARLA server (EMBODIED_UI_CARLA=1)",
+    "dotnet: requires the .NET SDK to build the C# protocol server",
+]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["embodied_ui"]

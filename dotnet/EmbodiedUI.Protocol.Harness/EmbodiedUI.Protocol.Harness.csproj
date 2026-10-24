@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Builds the Unity package's engine-independent protocol sources with
+       .NET, for self-tests and a toy engine server the Python tests use. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <LangVersion>9.0</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../unity/io.github.m-colley.embodied-ui/Runtime/Protocol/*.cs" Link="Protocol/%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- The version Unity's com.unity.nuget.newtonsoft-json 3.2 ships. -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+</Project>
