@@ -12,6 +12,9 @@
   "max_speed_mps": 7.731515884399414,
   "throttle_input_min_while_pressed": 1.0,
   "touches_reported": 1.0,
+  "chime_db_at_0_5_m": 70.02059991327963,
+  "seat_amplitude_mps2": 2.0,
+  "trace_columns": 43,
   "camera_shape": [
     48,
     64,

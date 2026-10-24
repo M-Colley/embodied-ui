@@ -1,10 +1,10 @@
 """Physical user interfaces for simulated bodies, bridged to game engines.
 
 Devices (buttons, switches, knobs, sliders, levers, pedals, steering wheels,
-joysticks, touch surfaces, screens, lamps and engine-driven props) are
-compiled into any MuJoCo model, operated through contact by a simulated body,
-and routed in lockstep to Unity, CARLA or any engine speaking the
-``embodied-ui/1`` protocol.
+joysticks, touch surfaces, screens, lamps, speakers, vibrotactors and
+engine-driven props) are compiled into any MuJoCo model, operated through
+contact by a simulated body, and routed in lockstep to Unity, CARLA or any
+engine speaking the ``embodied-ui/1`` protocol.
 """
 
 from .devices import (
@@ -20,9 +20,11 @@ from .devices import (
     PushButton,
     Screen,
     Slider,
+    Speaker,
     SteeringWheel,
     ToggleSwitch,
     TouchSurface,
+    Vibrotactor,
     register,
 )
 from .frames import (
@@ -41,6 +43,7 @@ from .interface import Contacts, Interface
 from .logic import Event, Interlock
 from .mechanics import Axis, Detents, ForceCurve, Servo
 from .runtime import InterfaceRuntime, Reading, merge_readings
+from .trace import TraceRecorder
 
 __version__ = "0.1.0"
 
@@ -79,12 +82,15 @@ __all__ = [
     "Screen",
     "Servo",
     "Slider",
+    "Speaker",
     "Sphere",
     "SteeringWheel",
     "ToggleSwitch",
     "TouchSurface",
+    "TraceRecorder",
     "UNITY",
     "UNREAL",
+    "Vibrotactor",
     "merge_readings",
     "register",
 ]

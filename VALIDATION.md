@@ -162,6 +162,40 @@ handled.
   to `IgnoreFocus` (and, in the Editor, routes all device input to the Game
   view) during a session, restoring the settings afterwards.
 
+### Unity 6.6, multimodal outputs (2026-10-24, evening)
+
+Same editor and test project, rerun after adding sound and vibration:
+
+- **New outputs.** `EmbodiedAudioOutput` and `EmbodiedVibrationOutput`
+  report `chime.level`, `chime.frequency`, `seat.amplitude` and
+  `seat.frequency`; the test car sets them at full throttle.
+- **C# test.** `ACSharpClientStepsTheSceneInLockstep` checks that the chime
+  is silent in the welcome and at 64 dB in the last frame, and that the
+  seat vibrates at 2 m/s².
+- **Live test.** The MuJoCo rig gains a `Speaker` and a `Vibrotactor`.
+  - 0.5 m from the speaker, the free-field level is 70.0 dB, which is
+    64 dB + 20 log10 2.
+  - The seat signal arrives at 2 m/s², and the felt vibration stays 0
+    because nothing touches the pad.
+  - A `TraceRecorder` wrote all 150 frames as a CSV with 43 columns.
+- **Result.** Both PlayMode tests pass
+  ([summary](evidence/unity-live.json)). The log has no compiler warnings
+  or errors.
+- **Offline suite.** With these changes it has 75 passed and 3 skipped
+  (the CARLA and Unity live tests) on MuJoCo 3.17.0. The new tests cover:
+  - the speaker's free-field level;
+  - vibration felt only through contact with the pad;
+  - lamp signals;
+  - trace files in CSV and JSON Lines;
+  - the Unity package layout.
+
+**Defect found and fixed.** All output components shared one file,
+`EmbodiedOutputs.cs`. Unity attaches a component in the Inspector, and
+restores it from a saved scene, only if its class and file names match.
+Adding components from code, as the tests do, hid the problem. Each
+component now has its own file and `.meta`, and
+`tests/test_unity_package.py` checks this offline.
+
 ### Not yet validated
 
 - **Unity:** the Editor exporter menu, the WheelCollider sample and a built

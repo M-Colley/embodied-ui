@@ -1,6 +1,7 @@
 // A small scene for the bridge tests: a car pushed through an Input System
-// action bound to the embodied-ui device, a lamp, a camera, a designed
-// button and a probe that reports frame timing, physics steps and touches.
+// action bound to the embodied-ui device, a lamp, a chime, a seat vibration,
+// a camera, a designed button and a probe that reports frame timing,
+// physics steps and touches.
 
 using System.Collections.Generic;
 using EmbodiedUI.Protocol;
@@ -9,12 +10,17 @@ using UnityEngine.InputSystem;
 
 namespace EmbodiedUI.Tests
 {
-    /// <summary>A rigid body accelerated by the vehicle.throttle control.</summary>
+    /// <summary>
+    /// A rigid body accelerated by the vehicle.throttle control; full
+    /// throttle lights the lamp, sounds the chime and vibrates the seat.
+    /// </summary>
     public sealed class TestCar : MonoBehaviour
     {
         public InputAction throttle;
         public Rigidbody body;
         public Light lamp;
+        public EmbodiedAudioOutput chime;
+        public EmbodiedVibrationOutput seat;
         public int fixedSteps;
         public float lastThrottle;
 
@@ -38,7 +44,10 @@ namespace EmbodiedUI.Tests
             fixedSteps++;
             lastThrottle = throttle.ReadValue<float>();
             body.AddForce(transform.forward * 5f * lastThrottle, ForceMode.Acceleration);
-            if (lamp != null) lamp.enabled = lastThrottle > 0.5f;
+            var full = lastThrottle > 0.5f;
+            if (lamp != null) lamp.enabled = full;
+            if (chime != null) chime.playing = full;
+            if (seat != null) seat.amplitude = full ? 2f : 0f;
         }
     }
 
@@ -100,6 +109,18 @@ namespace EmbodiedUI.Tests
             lamp.outputName = "lamp.on";
             lamp.follow = light;
             scene.Objects.Add(lampObject);
+
+            // Set from the car rather than an AudioSource: batch-mode
+            // editors may run without an audio device.
+            var chime = new GameObject("chime").AddComponent<EmbodiedAudioOutput>();
+            chime.device = "chime";
+            chime.levelAtFullVolume = 64f;
+            scene.Car.chime = chime;
+            scene.Objects.Add(chime.gameObject);
+            var seat = new GameObject("seat").AddComponent<EmbodiedVibrationOutput>();
+            seat.device = "seat";
+            scene.Car.seat = seat;
+            scene.Objects.Add(seat.gameObject);
 
             var cameraObject = new GameObject("camera");
             cameraObject.transform.position = new Vector3(0f, 2f, -5f);

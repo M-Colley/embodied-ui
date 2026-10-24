@@ -138,6 +138,9 @@ namespace EmbodiedUI.Tests
             Assert.AreEqual(1.0, (double)last["unity.throttle_input"], 1e-6, "the action saw the control");
             Assert.Greater((double)last["vehicle.speed"], 0.5);
             Assert.AreEqual(1.0, (double)last["lamp.on"]);
+            Assert.AreEqual(64.0, (double)last["chime.level"], 1e-6);
+            Assert.AreEqual(2.0, (double)last["seat.amplitude"], 1e-6);
+            Assert.AreEqual(0.0, (double)((JObject)list[0].Header["outputs"])["chime.level"], "silent before the first frame");
             Assert.AreEqual(1.0, (double)((JObject)list[9].Header["outputs"])["unity.touches"], "touch began");
             Assert.AreEqual(0.0, (double)((JObject)list[16].Header["outputs"])["unity.touches"], "touch ended");
             CollectionAssert.Contains(received, "b:press");

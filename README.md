@@ -112,6 +112,8 @@ default). Channels are `device.channel` floats; events are `press`,
 | `TouchSurface` | none | `touches`, `u`, `v`, `force`, `<region>.pressed` | `image` (with `resolution`) | One touch per touching body. In-vehicle soft keys: no gain beyond 17.5 mm (Kim et al., 2014); ≥ 5 mm between targets (ISO 9241-410 Annex J) |
 | `Screen` | none | none | `image` | Texture written into `model.tex_data` |
 | `Indicator` | none | none | `on` | Off and on colours |
+| `Speaker` | none | none | `level` (dB SPL at 1 m), `frequency` | Sound for auditory models; free-field level at any point |
+| `Vibrotactor` | none | `touches`, `u`, `v`, `force` | `amplitude` (m/s²), `frequency` | Vibration pad for tactile models; felt only while touched |
 | `Prop` | mocap | none | `pose` | Engine-driven object the body can touch but not push |
 | `Control` | any | per axis, `value` | per axis | Compose your own from `Axis`, `Detents`, `ForceCurve`, `Servo` and `Part` |
 
@@ -123,6 +125,21 @@ the device's own `qfrc_applied` entries before each physics step. Call
 `runtime.apply(data)`, or use `runtime.step(data, n)`, every step.
 `Contacts(pairs=("distph*",))` limits collisions to named segments of a dense
 musculoskeletal model.
+
+### Signals and traces for simulated users
+
+Lamps, speakers and vibrotactors carry signals that a simulated user must
+perceive rather than feel as forces. The runtime keeps the last value of
+each (`runtime.signals("chime")`). It also gives the free-field sound level
+at an ear, falling 6 dB per doubling of distance
+(`runtime.sound_level(data, "chime", ear)`), and the vibration reaching
+whatever touches a pad (`runtime.vibration("seat")`). Hearing and touch
+thresholds belong to the user model, for example in embodied-human.
+
+`TraceRecorder` records every frame's channels, events and engine outputs
+(`recorder.record_bridge(bridge.step(data))`). It writes JSON Lines or a
+wide CSV, so traces from people and from simulated users can be analysed
+with the same tools.
 
 ## Engines
 
@@ -162,7 +179,10 @@ System, Newtonsoft JSON) contains:
   Touches arrive on a virtual `Touchscreen` for uGUI and UI Toolkit.
 - **Outputs.** `EmbodiedPoseOutput`, `EmbodiedVehicleOutput` (SI telemetry),
   `EmbodiedCameraOutput` (driver views or `screen.image`),
-  `EmbodiedLampOutput`, `EmbodiedValueOutput` and `SetOutput` from scripts.
+  `EmbodiedLampOutput`, `EmbodiedAudioOutput` (follows an `AudioSource`),
+  `EmbodiedVibrationOutput`, `EmbodiedValueOutput` and `SetOutput` from
+  scripts. Each component lives in its own file, so it can be added in the
+  Inspector and saved in scenes.
 - **Designing devices in Unity.** Put an `EmbodiedDevice` component on a
   control, optionally with its mesh. The Python side then fetches the scene's
   devices at runtime with `embodied_ui.backends.describe(port=...)`, or loads
@@ -209,6 +229,17 @@ memory, proprioception and motor modules. It includes SuRT and DRT tasks on
 embodied-ui touch surfaces, lamps and buttons, and a benchmark against
 published human data.
 
+## For research on simulated users
+
+The package covers what a shared modelling platform needs on the interface
+side. Users and models operate the same devices through contact. Engines
+run in lockstep, so a model can close the loop with a real-time simulator,
+and the same model runs in Unity, CARLA or offline. Visual, auditory and
+tactile outputs reach the model as signals, and recorded traces make
+simulated and human sessions comparable. Interfaces are data: manifests,
+or devices designed in Unity. That makes design alternatives easy to
+generate and compare.
+
 ## Validation
 
 See [VALIDATION.md](VALIDATION.md). In short:
@@ -222,8 +253,8 @@ See [VALIDATION.md](VALIDATION.md). In short:
   driver-eye cameras.
 - **Unity 6.6 (6000.6.7f1):** the package compiles without errors and its
   PlayMode tests pass in batch mode. A live test drives a Unity scene from a
-  MuJoCo fingertip, checking lockstep timing, input, physics, lamps,
-  touches, camera images and `describe`.
+  MuJoCo fingertip, checking lockstep timing, input, physics, lamps, sound,
+  vibration, touches, camera images, `describe` and a recorded trace.
 
 ## Development
 

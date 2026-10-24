@@ -1023,6 +1023,74 @@ class Indicator(Device):
 
 @register
 @dataclass(frozen=True)
+class Speaker(Device):
+    """Sound source the engine drives with ``level`` and ``frequency``.
+
+    ``level`` is the sound pressure level in dB SPL at ``reference_distance``
+    from the speaker and ``frequency`` the dominant tone in Hz. Listeners
+    hear the level spread in a free field
+    (:meth:`InterfaceRuntime.sound_level`); room acoustics, masking and
+    hearing thresholds belong to the listener's model, not the device.
+    """
+
+    radius: float = 0.03
+    reference_distance: float = 1.0
+
+    def mechanism(self) -> Mechanism:
+        grille = Part(
+            Cylinder(self.radius, 0.002), Pose((0, 0, -0.002)), _DARK, collide=False
+        )
+        return Mechanism(static=(grille,))
+
+    def continuous(self, raw: Raw) -> dict[str, float]:
+        return {}
+
+    def outputs(self) -> tuple[str, ...]:
+        return ("level", "frequency")
+
+
+@register
+@dataclass(frozen=True)
+class Vibrotactor(Device):
+    """Vibration actuator behind a contact pad, e.g. in a seat or wheel rim.
+
+    The engine sets ``amplitude`` (peak acceleration of the pad, m/s²) and
+    ``frequency`` (Hz). The pad senses contact like a touch surface
+    (``touches``, ``u``, ``v``, ``force``), so a tactile model can tell
+    whether skin touches it while it vibrates
+    (:meth:`InterfaceRuntime.vibration`). The vibration is a signal, not a
+    force on the model.
+    """
+
+    size: tuple[float, float] = (0.03, 0.03)
+    thickness: float = 0.004
+    threshold: float = 0.05
+
+    def mechanism(self) -> Mechanism:
+        width, height = self.size
+        pad = Part(
+            Box((width / 2, height / 2, self.thickness / 2)),
+            Pose((0, 0, -self.thickness / 2)),
+            _GREY,
+        )
+        return Mechanism(
+            static=(pad,), surface=TouchSpec((width, height), self.threshold)
+        )
+
+    def continuous(self, raw: Raw) -> dict[str, float]:
+        return {}
+
+    def logic(self) -> Logic:
+        surface = self.mechanism().surface
+        assert surface is not None
+        return _TouchLogic(self.name, surface)
+
+    def outputs(self) -> tuple[str, ...]:
+        return ("amplitude", "frequency")
+
+
+@register
+@dataclass(frozen=True)
 class Prop(Device):
     """Engine-driven rigid object, e.g. a door, a handed-over cup or a mirror.
 

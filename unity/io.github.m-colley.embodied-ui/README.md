@@ -20,8 +20,10 @@ telemetry back.
    `EmbodiedTouch.ToScreen`.
 4. Report outputs: **Pose Output** (`cup.pose`), **Vehicle Output**
    (`vehicle.*`), **Camera Output** (`camera.driver` or `screen.image`),
-   **Lamp Output** (`lamp.on`), **Value Output** (`wheel.torque`), or
-   `EmbodiedBridge.Active.SetOutput(name, value)`.
+   **Lamp Output** (`lamp.on`), **Audio Output** (`chime.level`,
+   `chime.frequency` for an embodied-ui `Speaker`), **Vibration Output**
+   (`seat.amplitude`, `seat.frequency` for a `Vibrotactor`), **Value
+   Output** (`wheel.torque`), or `EmbodiedBridge.Active.SetOutput(name, value)`.
 5. Optionally design controls here. Add **Embodied Device** to a control,
    with its local +Z pointing into the panel. Python then builds the devices
    with `embodied_ui.backends.describe(port=47474)`, or from

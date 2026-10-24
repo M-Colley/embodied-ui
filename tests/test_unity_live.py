@@ -15,7 +15,16 @@ import mujoco
 import numpy as np
 import pytest
 
-from embodied_ui import Indicator, Interface, Pose, PushButton, TouchSurface
+from embodied_ui import (
+    Indicator,
+    Interface,
+    Pose,
+    PushButton,
+    Speaker,
+    TouchSurface,
+    TraceRecorder,
+    Vibrotactor,
+)
 from embodied_ui.backends import RemoteEngine, describe
 from embodied_ui.engine import Bridge, Route, Routes
 from embodied_ui.probe import Probe
@@ -59,6 +68,8 @@ def rig():
             PushButton("throttle_key"),
             TouchSurface("screen", Pose((0.3, 0, 0))),
             Indicator("lamp", Pose((0.6, 0, 0))),
+            Speaker("chime", Pose((0.0, 0.5, 0))),
+            Vibrotactor("seat", Pose((0.0, -0.5, 0))),
         ),
     )
     spec = mujoco.MjSpec()
@@ -93,6 +104,9 @@ def test_a_fingertip_drives_a_unity_scene(unity, tmp_path):
         events=(("screen", "screen"),),
     )
     frames = []
+    recorder = TraceRecorder()
+    chime_db = []
+    seat = []
     lamp = model.geom("rig/lamp/static0").id
     lamp_on_while_pressed = False
     with Bridge(runtime, remote, routes, engine_frame="unity") as bridge:
@@ -110,6 +124,12 @@ def test_a_fingertip_drives_a_unity_scene(unity, tmp_path):
             runtime.step(data, 10)
             frame = bridge.step(data)
             frames.append(frame)
+            recorder.record_bridge(frame)
+            # Heard 0.5 m from the chime: 6 dB above its 1 m level.
+            ear = runtime.position(data, "chime") + (0.5, 0, 0)
+            chime_db.append(runtime.sound_level(data, "chime", ear))
+            amplitude = runtime.signals("seat")["amplitude"]
+            seat.append((amplitude, runtime.vibration("seat")))
             if 1.0 < t < 2.0 and np.allclose(model.geom_rgba[lamp], Indicator("x").on):
                 lamp_on_while_pressed = True
     process.wait(180)
@@ -130,6 +150,14 @@ def test_a_fingertip_drives_a_unity_scene(unity, tmp_path):
     assert image.shape == (48, 64, 3) and image.dtype == np.uint8
     assert lamp_on_while_pressed
     assert max(o["unity.touches"] for o in outputs[105:135]) == 1
+    # Sound and vibration from Unity reach the MuJoCo devices; nobody
+    # touches the seat pad, so no vibration is felt.
+    assert max(chime_db) == pytest.approx(64.0 + 20 * np.log10(2), abs=1e-6)
+    assert chime_db[0] == pytest.approx(0.0 + 20 * np.log10(2), abs=1e-6)
+    assert max(a for a, _ in seat) == 2.0 and max(f for _, f in seat) == 0.0
+    trace = recorder.write_csv(tmp_path / "trace.csv")
+    header = trace.read_text().splitlines()[0].split(",")
+    assert {"time", "throttle_key.value", "chime.level", "vehicle.speed"} <= set(header)
 
     root = ET.parse(results).getroot()
     cases = {case.get("name"): case.get("result") for case in root.iter("test-case")}
@@ -149,6 +177,9 @@ def test_a_fingertip_drives_a_unity_scene(unity, tmp_path):
         "max_speed_mps": max(o["vehicle.speed"] for o in outputs),
         "throttle_input_min_while_pressed": min(pressed),
         "touches_reported": max(o["unity.touches"] for o in outputs[105:135]),
+        "chime_db_at_0_5_m": max(chime_db),
+        "seat_amplitude_mps2": max(a for a, _ in seat),
+        "trace_columns": len(header),
         "camera_shape": list(image.shape),
         "playmode": cases,
     }

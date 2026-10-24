@@ -2,7 +2,7 @@
   "name": "io.github.m-colley.embodied-ui",
   "version": "0.1.0",
   "displayName": "Embodied UI",
-  "description": "Lockstep bridge between MuJoCo bodies (embodied-ui, MyoSuite) and Unity. Simulated fingers, hands and feet operate Unity input devices, touchscreens and UI; Unity returns poses, lamps, displays and camera images.",
+  "description": "Lockstep bridge between MuJoCo bodies (embodied-ui, MyoSuite) and Unity. Simulated fingers, hands and feet operate Unity input devices, touchscreens and UI; Unity returns poses, lamps, sounds, vibrations, displays and camera images.",
   "unity": "2022.3",
   "documentationUrl": "https://github.com/M-Colley/embodied-ui",
   "license": "Apache-2.0",
@@ -27,6 +27,7 @@
   "dependencies": {
     "com.unity.inputsystem": "1.7.0",
     "com.unity.nuget.newtonsoft-json": "3.2.1",
-    "com.unity.modules.physics": "1.0.0"
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.audio": "1.0.0"
   }
 }

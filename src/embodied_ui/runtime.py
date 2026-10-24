@@ -71,6 +71,8 @@ class _Device:
     indicators: list[int] = field(default_factory=list)
     mocap: int | None = None
     image: NDArray[np.uint8] | None = None
+    body: int = -1
+    signals: dict[str, float] = field(default_factory=dict)
 
 
 class InterfaceRuntime:
@@ -111,6 +113,7 @@ class InterfaceRuntime:
                 ]
             bound = _Device(device, mechanism, axes, touch, device.logic())
             base = model.body(interface.element(device.name))
+            bound.body = int(base.id)
             own_bodies.add(int(base.id))
             for axis in mechanism.axes:
                 own_bodies.add(
@@ -152,6 +155,7 @@ class InterfaceRuntime:
         """Release every state machine and clear engine forces and setpoints."""
         self._previous = {}
         for bound in self._devices:
+            bound.signals.clear()
             if bound.logic is not None:
                 bound.logic.reset()
             for axis in bound.axes:
@@ -284,8 +288,11 @@ class InterfaceRuntime:
         ``device.axis.force`` (generalized force added every step),
         ``device.setpoint``/``device.axis.setpoint`` (servo target),
         ``device.on`` (indicator), ``device.image`` (H x W x 3 uint8 display
-        frame, top row first) and ``device.pose`` (mocap position and
-        (w, x, y, z) quaternion in the model's frame).
+        frame, top row first), ``device.pose`` (mocap position and
+        (w, x, y, z) quaternion in the model's frame), and the signals
+        ``device.level``/``device.frequency`` (speaker) and
+        ``device.amplitude``/``device.frequency`` (vibrotactor), kept for
+        perception models (:meth:`signals`).
         """
         self._check(data)
         for bound in self._devices:
@@ -296,6 +303,8 @@ class InterfaceRuntime:
                 if not key.startswith(prefix):
                     continue
                 suffix = key[len(prefix) :]
+                if suffix in _SIGNALS and suffix in bound.device.outputs():
+                    bound.signals[suffix] = _finite(value, key)
                 head, _, tail = suffix.partition(".")
                 if suffix in ("force", "torque") and single is not None:
                     single.feedback = _finite(value, key)
@@ -341,10 +350,41 @@ class InterfaceRuntime:
 
     def image(self, device: str) -> NDArray[np.uint8] | None:
         """Return the last frame shown on a display, top row first."""
-        for bound in self._devices:
-            if bound.device.name == device:
-                return bound.image
-        raise KeyError(device)
+        return self._bound(device).image
+
+    def signals(self, device: str) -> dict[str, float]:
+        """Return the last signal outputs of a device: ``on`` of a lamp,
+        ``level`` and ``frequency`` of a speaker, ``amplitude`` and
+        ``frequency`` of a vibrotactor. Empty until the engine sets them."""
+        return dict(self._bound(device).signals)
+
+    def position(self, data: mujoco.MjData, device: str) -> NDArray[np.float64]:
+        """Return the world position of a device's frame, m."""
+        self._check(data)
+        return np.array(data.xpos[self._bound(device).body])
+
+    def sound_level(
+        self, data: mujoco.MjData, device: str, point: Sequence[float]
+    ) -> float:
+        """Free-field sound pressure level of a speaker at a world point,
+        dB SPL: its level minus 20 log10(distance / reference distance),
+        so -6 dB per doubling of distance. ``-inf`` while silent."""
+        bound = self._bound(device)
+        level = bound.signals.get("level")
+        if level is None:
+            return -math.inf
+        reference = float(getattr(bound.device, "reference_distance", 1.0))
+        offset = np.asarray(point, dtype=float) - self.position(data, device)
+        distance = float(np.linalg.norm(offset))
+        return level - 20.0 * math.log10(max(distance, 1e-3) / reference)
+
+    def vibration(self, device: str) -> float:
+        """Peak acceleration a vibrotactor transmits, m/s²: its amplitude
+        while the last reading found something touching its pad, else 0."""
+        bound = self._bound(device)
+        tracker = getattr(bound.logic, "tracker", None)
+        touched = tracker is not None and bool(tracker.touches())
+        return bound.signals.get("amplitude", 0.0) if touched else 0.0
 
     def textures(self) -> list[int]:
         """Return texture ids to re-upload to a renderer after display updates."""
@@ -355,6 +395,12 @@ class InterfaceRuntime:
         ]
 
     # Helpers ---------------------------------------------------------------
+
+    def _bound(self, device: str) -> _Device:
+        for bound in self._devices:
+            if bound.device.name == device:
+                return bound
+        raise KeyError(device)
 
     def _check(self, data: mujoco.MjData) -> None:
         if data.model is not self.model:
@@ -372,6 +418,10 @@ class InterfaceRuntime:
                 values, _ = logic.update(0.0, own, {}, raw)
                 names += [f"{bound.device.name}.{k}" for k in values]
         return tuple(names)
+
+
+#: Engine outputs that are signals for perception, not forces or visuals.
+_SIGNALS = ("on", "level", "frequency", "amplitude")
 
 
 def _exists(model: mujoco.MjModel, kind: mujoco.mjtObj, name: str) -> bool:
