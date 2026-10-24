@@ -1,0 +1,24 @@
+{
+  "unity": "6000.6.7f1",
+  "test_framework_engine": "3.5.0.0",
+  "frames": 150,
+  "delta_time_s": [
+    0.019999992102384567,
+    0.019999992102384567
+  ],
+  "physics_steps_per_frame": [
+    1.0
+  ],
+  "max_speed_mps": 7.731515884399414,
+  "throttle_input_min_while_pressed": 1.0,
+  "touches_reported": 1.0,
+  "camera_shape": [
+    48,
+    64,
+    3
+  ],
+  "playmode": {
+    "ACSharpClientStepsTheSceneInLockstep": "Passed",
+    "PythonClientDrivesTheScene": "Passed"
+  }
+}

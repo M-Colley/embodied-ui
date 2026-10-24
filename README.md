@@ -220,8 +220,10 @@ See [VALIDATION.md](VALIDATION.md). In short:
   interoperates with the Python client.
 - **CARLA:** the live tests pass against CARLA 0.10.0 (UE5.5), including
   driver-eye cameras.
-- **Not yet compiled or run inside a Unity Editor:** the Unity-specific
-  scripts (the bridge component, input devices and outputs).
+- **Unity 6.6 (6000.6.7f1):** the package compiles without errors and its
+  PlayMode tests pass in batch mode. A live test drives a Unity scene from a
+  MuJoCo fingertip, checking lockstep timing, input, physics, lamps,
+  touches, camera images and `describe`.
 
 ## Development
 
@@ -232,6 +234,7 @@ python -m mypy src/embodied_ui --ignore-missing-imports
 python -m build
 dotnet build dotnet/EmbodiedUI.Protocol.Harness -c Release
 EMBODIED_UI_CARLA=1 python -m pytest tests/test_carla_live.py   # with a CARLA server
+EMBODIED_UI_UNITY="<path to Unity.exe>" python -m pytest tests/test_unity_live.py
 ```
 
 ## Licence

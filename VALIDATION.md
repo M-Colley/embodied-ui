@@ -116,12 +116,56 @@ run in its own VALIDATION.md and in `evidence/ue55-interface-hazard.json`:
   was flipped at 2.02 s, CARLA's light state was 48 (both blinkers) and the
   lamp was lit from that state.
 
+### Unity 6.6, live (2026-10-24, later the same day)
+
+Unity 6000.6.7f1 was installed. The test project `unity/EmbodiedUITests`
+references the package from disk with Input System 1.20.1, Newtonsoft JSON
+3.2.2 and Test Framework 1.8.0, all bundled with the editor.
+
+```bash
+Unity.exe -batchmode -projectPath unity/EmbodiedUITests -runTests -testPlatform PlayMode -testResults results.xml
+EMBODIED_UI_UNITY="<path to Unity.exe>" python -m pytest tests/test_unity_live.py
+```
+
+**Compilation.** The package compiles with no errors. Unity 6.6 reported one
+warning, the deprecated `FindObjectsByType` sort overload, which is now
+handled.
+
+**PlayMode tests.** Both pass ([results](evidence/unity-live.xml),
+[summary](evidence/unity-live.json)).
+
+- **`ACSharpClientStepsTheSceneInLockstep`:** a background-thread client sends
+  hello, 20 steps, reset and close. Every frame lasts 0.02 s with exactly
+  one physics step. An Input System action bound to
+  `<EmbodiedUI>/vehicle_throttle` reads the control and accelerates a
+  rigid body, a light follows it, and touches begin and end on the
+  virtual touchscreen. Device events reach `EventReceived`, and camera
+  images arrive as attachments.
+- **`PythonClientDrivesTheScene` with `tests/test_unity_live.py`:**
+  - `describe` returns the scene's designed button. Its Unity pose converts
+    to (0.4, 0, 1.0) m in MuJoCo, it is pressed forward, and its cube mesh
+    gets a fitted 15 x 15 x 6 mm box collider.
+  - A servo fingertip presses an embodied-ui key for 1.6 s. Over 150
+    lockstep frames, Unity's input read 1.0 throughout the press and the
+    car reached 7.7 m/s.
+  - Unity's light lit the MuJoCo lamp, a tap on the MuJoCo touch surface
+    became one Unity touch, and 64 x 48 camera images arrived every frame.
+  - Unity's frame time was 0.0199999921 s (the float32 value of 0.02)
+    every frame.
+
+**Two defects found and fixed.**
+- **Hook point.** The bridge first hooked into the `Initialization` phase,
+  after Unity's `TimeUpdate`, so the first frame of a session ran with the
+  real elapsed time (0.15 ms).
+- **Focus.** The Input System disabled the virtual device because a
+  batch-mode editor is unfocused. The bridge now sets `backgroundBehavior`
+  to `IgnoreFocus` (and, in the Editor, routes all device input to the Game
+  view) during a session, restoring the settings afterwards.
+
 ### Not yet validated
 
-- **Unity scripts:** `Runtime/Unity`, `Editor` and the sample (the bridge
-  component, virtual input device, touchscreen injection, outputs, describe
-  with real meshes, exporter) have not been compiled or run in a Unity
-  Editor. Only Unity Hub metadata was present on this PC, without an editor.
+- **Unity:** the Editor exporter menu, the WheelCollider sample and a built
+  player (outside the Editor) have not been run.
 - **Unreal:** no Unreal or Godot server exists. PROTOCOL.md specifies one.
 - **Musculoskeletal operation:** no MyoSuite hand has yet operated these
   devices with learned or reflex control; the tests use the servo fingertip.

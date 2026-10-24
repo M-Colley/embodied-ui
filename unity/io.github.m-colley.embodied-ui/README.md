@@ -41,7 +41,15 @@ again.
 
 ## Status
 
-The `Runtime/Protocol` assembly has no Unity dependency. It is built and
-tested with .NET 9 against the Python client. The Unity-specific scripts
-have not yet been compiled in a Unity Editor; see the repository's
-VALIDATION.md.
+The package compiles in Unity 6.6 (6000.6.7f1) with Input System 1.20.1, and
+its PlayMode tests (`Tests/Runtime`) pass in batch mode. One test drives the
+bridge from a C# client. Another is driven by the Python test
+`tests/test_unity_live.py` through the test project `unity/EmbodiedUITests`.
+The `Runtime/Protocol` assembly has no Unity dependency and is also built
+and tested with .NET 9. See the repository's VALIDATION.md.
+
+Two behaviours the tests established:
+- **Hook point.** The bridge hooks into the `TimeUpdate` phase, so the frame
+  time applies from the first frame.
+- **Focus.** During a session it sets the Input System to ignore window
+  focus, because headless players and batch mode are unfocused.

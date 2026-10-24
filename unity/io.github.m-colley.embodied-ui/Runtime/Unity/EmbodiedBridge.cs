@@ -51,6 +51,9 @@ namespace EmbodiedUI
         /// <summary>Raised on reset requests; restore your scenario here.</summary>
         public static event Action<int?, JObject> ResetRequested;
 
+        /// <summary>The port actually listened on (useful when <see cref="port"/> is 0).</summary>
+        public int ListeningPort => server != null ? server.Port : 0;
+
         public bool InSession { get; private set; }
         public long Frame { get; private set; }
         public double Dt { get; private set; }
@@ -65,6 +68,10 @@ namespace EmbodiedUI
         bool stepPending, resetPending, everConnected;
         float savedCapture, savedFixed, savedMaximum;
         InputSettings.UpdateMode savedMode;
+        InputSettings.BackgroundBehavior savedBackground;
+#if UNITY_EDITOR
+        InputSettings.EditorInputBehaviorInPlayMode savedEditorBehavior;
+#endif
 
         // Controls ------------------------------------------------------------
 
@@ -210,6 +217,16 @@ namespace EmbodiedUI
                 savedMode = InputSystem.settings.updateMode;
                 InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
             }
+            // A lockstep session is driven by the client, not by window focus:
+            // headless players, batch mode and an unfocused Game view would
+            // otherwise disable the virtual devices.
+            savedBackground = InputSystem.settings.backgroundBehavior;
+            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
+#if UNITY_EDITOR
+            savedEditorBehavior = InputSystem.settings.editorInputBehaviorInPlayMode;
+            InputSystem.settings.editorInputBehaviorInPlayMode =
+                InputSettings.EditorInputBehaviorInPlayMode.AllDeviceInputAlwaysGoesToGameView;
+#endif
             inputDevice = new EmbodiedInputDevice(hello.Controls);
             touch = new EmbodiedTouch();
             InSession = true;
@@ -224,6 +241,10 @@ namespace EmbodiedUI
             Time.fixedDeltaTime = savedFixed;
             Time.maximumDeltaTime = savedMaximum;
             if (driveInputUpdates) InputSystem.settings.updateMode = savedMode;
+            InputSystem.settings.backgroundBehavior = savedBackground;
+#if UNITY_EDITOR
+            InputSystem.settings.editorInputBehaviorInPlayMode = savedEditorBehavior;
+#endif
             inputDevice?.Dispose();
             touch?.Dispose();
             inputDevice = null;
@@ -285,9 +306,12 @@ namespace EmbodiedUI
             var systems = (PlayerLoopSystem[])loop.subSystemList.Clone();
             for (int i = 0; i < systems.Length; i++)
             {
-                // Before the clock update in Initialization, so a new
-                // captureDeltaTime applies to the frame it is set in.
-                if (systems[i].type == typeof(UnityEngine.PlayerLoop.Initialization))
+                // Before the clock update (TimeUpdate, the first phase of a
+                // frame), so a new captureDeltaTime applies to the frame it
+                // is set in. Found by the PlayMode test: hooking into
+                // Initialization instead left the first frame's deltaTime
+                // at the real elapsed time.
+                if (systems[i].type == typeof(UnityEngine.PlayerLoop.TimeUpdate))
                     systems[i].subSystemList = Insert(systems[i].subSystemList, 0, typeof(EmbodiedBeforeFrame), before);
                 // After rendering, so cameras show the frame just simulated.
                 else if (systems[i].type == typeof(UnityEngine.PlayerLoop.PostLateUpdate))

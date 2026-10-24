@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "io.github.m-colley.embodied-ui": "file:../../io.github.m-colley.embodied-ui",
+    "com.unity.inputsystem": "1.20.1",
+    "com.unity.nuget.newtonsoft-json": "3.2.2",
+    "com.unity.test-framework": "1.8.0",
+    "com.unity.ugui": "2.6.0",
+    "com.unity.modules.physics": "1.0.0",
+    "com.unity.modules.vehicles": "1.0.0",
+    "com.unity.modules.imgui": "1.0.0",
+    "com.unity.modules.jsonserialize": "1.0.0",
+    "com.unity.modules.ui": "1.0.0"
+  },
+  "testables": ["io.github.m-colley.embodied-ui"]
+}

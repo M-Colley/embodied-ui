@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="2" result="Passed" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-24 20:19:31Z" end-time="2026-10-24 20:19:35Z" duration="3.3315473">
+  <test-suite type="TestSuite" id="1009" name="EmbodiedUITests" fullname="EmbodiedUITests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-24 20:19:31Z" end-time="2026-10-24 20:19:35Z" duration="3.331547" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1004" name="EmbodiedUI.Tests.dll" fullname="C:/Users/localadmin/Desktop/embodied-ui/unity/EmbodiedUITests/Library/ScriptAssemblies/EmbodiedUI.Tests.dll" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-24 20:19:31Z" end-time="2026-10-24 20:19:35Z" duration="3.324802" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="21776" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1005" name="EmbodiedUI" fullname="EmbodiedUI" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-24 20:19:31Z" end-time="2026-10-24 20:19:35Z" duration="3.324222" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1006" name="Tests" fullname="EmbodiedUI.Tests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-24 20:19:31Z" end-time="2026-10-24 20:19:35Z" duration="3.323936" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestFixture" id="1001" name="BridgeTests" fullname="EmbodiedUI.Tests.BridgeTests" classname="EmbodiedUI.Tests.BridgeTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-10-24 20:19:31Z" end-time="2026-10-24 20:19:35Z" duration="3.322648" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1002" name="ACSharpClientStepsTheSceneInLockstep" fullname="EmbodiedUI.Tests.BridgeTests.ACSharpClientStepsTheSceneInLockstep" methodname="ACSharpClientStepsTheSceneInLockstep" classname="EmbodiedUI.Tests.BridgeTests" runstate="Runnable" seed="758730051" result="Passed" start-time="2026-10-24 20:19:31Z" end-time="2026-10-24 20:19:32Z" duration="0.442422" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="120000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Embodied UI listening on 127.0.0.1:54488
+]]></output>
+            </test-case>
+            <test-case id="1003" name="PythonClientDrivesTheScene" fullname="EmbodiedUI.Tests.BridgeTests.PythonClientDrivesTheScene" methodname="PythonClientDrivesTheScene" classname="EmbodiedUI.Tests.BridgeTests" runstate="Runnable" seed="1524766440" result="Passed" start-time="2026-10-24 20:19:32Z" end-time="2026-10-24 20:19:35Z" duration="2.868226" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="Timeout" value="600000" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Embodied UI listening on 127.0.0.1:47475
+[EmbodiedUI live] the Python session ended after 149 frames
+Saving results to: C:\Users\localadmin\AppData\Local\Temp\pytest-of-localadmin\pytest-2371\test_a_fingertip_drives_a_unit0\playmode.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

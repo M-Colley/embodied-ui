@@ -20,3 +20,14 @@ unity/**/Library/
 unity/**/Temp/
 dotnet/**/bin/
 dotnet/**/obj/
+unity/EmbodiedUITests/Library/
+unity/EmbodiedUITests/Temp/
+unity/EmbodiedUITests/Logs/
+unity/EmbodiedUITests/UserSettings/
+unity/EmbodiedUITests/obj/
+unity/EmbodiedUITests/*.csproj
+unity/EmbodiedUITests/*.sln
+unity/EmbodiedUITests/*.slnx
+unity/EmbodiedUITests/.vscode/
+unity/EmbodiedUITests/Assets/Resources*
+unity/EmbodiedUITests/Assets/InitTestScene*

@@ -131,11 +131,15 @@ namespace EmbodiedUI
         /// <summary>The embodied-ui manifest of every EmbodiedDevice in the loaded scenes.</summary>
         public static JObject Build(Transform reference, List<Attachment> meshes, string name = null)
         {
+#pragma warning disable CS0618 // the sort-mode overload is deprecated in Unity 6.6 but the newer overloads are missing in 2022.3
 #if UNITY_2023_1_OR_NEWER
-            var devices = Object.FindObjectsByType<EmbodiedDevice>(FindObjectsSortMode.InstanceID);
+            var devices = Object.FindObjectsByType<EmbodiedDevice>(FindObjectsSortMode.None);
 #else
             var devices = Object.FindObjectsOfType<EmbodiedDevice>();
 #endif
+#pragma warning restore CS0618
+            // A stable order by name, independent of object identities.
+            System.Array.Sort(devices, (a, b) => string.CompareOrdinal(a.deviceName, b.deviceName));
             var list = new JArray();
             var names = new HashSet<string>();
             foreach (var device in devices)
