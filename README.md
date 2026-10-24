@@ -201,6 +201,14 @@ devices and engines:
 - `VehicleSessionEngine` lets any MuJoCo body with embodied-ui controls drive
   CARLA through `CarlaSession`, or the fitted vehicle surrogate offline.
 
+## A simulated human to operate them
+
+[embodied-human](https://github.com/M-Colley/embodied-human) builds a modular
+simulated human on top of these devices: eyes, foveated vision, attention,
+memory, proprioception and motor modules. It includes SuRT and DRT tasks on
+embodied-ui touch surfaces, lamps and buttons, and a benchmark against
+published human data.
+
 ## Validation
 
 See [VALIDATION.md](VALIDATION.md). In short:
