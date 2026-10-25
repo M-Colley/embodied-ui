@@ -1,0 +1,20 @@
+{
+    "name": "EmbodiedUI.Samples.WheelVehicle.Tests",
+    "rootNamespace": "EmbodiedUI.Samples.Tests",
+    "references": [
+        "EmbodiedUI.Samples.WheelVehicle",
+        "EmbodiedUI.Runtime",
+        "EmbodiedUI.Protocol",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll", "Newtonsoft.Json.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

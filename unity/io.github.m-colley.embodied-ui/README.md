@@ -50,6 +50,14 @@ bridge from a C# client. Another is driven by the Python test
 The `Runtime/Protocol` assembly has no Unity dependency and is also built
 and tested with .NET 9. See the repository's VALIDATION.md.
 
+Further tests from the repository, run in the same project:
+- **Exporter.** EditMode tests (`Tests/Editor`) export a scene with
+  *Export Manifest*'s routine. Python loads and compiles the result.
+- **Sample.** The Wheel Vehicle sample, copied in as Package Manager imports
+  it, accelerates, turns and brakes under Python's controls.
+- **Player.** A Windows player built in batch mode runs the bridge in
+  lockstep outside the Editor, headless but with a graphics device.
+
 Two behaviours the tests established:
 - **Hook point.** The bridge hooks into the `TimeUpdate` phase, so the frame
   time applies from the first frame.

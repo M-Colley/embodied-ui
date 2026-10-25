@@ -49,6 +49,8 @@ def unity(tmp_path):
             "-runTests",
             "-testPlatform",
             "PlayMode",
+            "-assemblyNames",
+            "EmbodiedUI.Tests",
             "-testResults",
             str(results),
             "-logFile",

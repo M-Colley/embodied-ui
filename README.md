@@ -251,10 +251,21 @@ See [VALIDATION.md](VALIDATION.md). In short:
   interoperates with the Python client.
 - **CARLA:** the live tests pass against CARLA 0.10.0 (UE5.5), including
   driver-eye cameras.
-- **Unity 6.6 (6000.6.7f1):** the package compiles without errors and its
-  PlayMode tests pass in batch mode. A live test drives a Unity scene from a
-  MuJoCo fingertip, checking lockstep timing, input, physics, lamps, sound,
-  vibration, touches, camera images, `describe` and a recorded trace.
+- **Unity 6.6 (6000.6.7f1):** the package compiles without errors, and its
+  PlayMode and EditMode tests pass in batch mode.
+  - A live test drives a Unity scene from a MuJoCo fingertip. It checks
+    lockstep timing, input, physics, lamps, sound, vibration, touches,
+    camera images, `describe` and a recorded trace.
+  - The manifest exporter's output loads and compiles in MuJoCo.
+  - Python drives the WheelCollider sample, which accelerates, turns and
+    brakes.
+  - A Windows player built in batch mode runs in lockstep outside the
+    Editor. It runs headless but with a graphics device, so its cameras
+    render.
+- **MyoSuite hand:** myo_sim's hand presses and releases a button through
+  contact under an open-loop muscle pattern, at forces that match the
+  button's spring. The wrist must be braced; with a free wrist the
+  fingertip slides off the cap.
 
 ## Development
 
@@ -265,7 +276,8 @@ python -m mypy src/embodied_ui --ignore-missing-imports
 python -m build
 dotnet build dotnet/EmbodiedUI.Protocol.Harness -c Release
 EMBODIED_UI_CARLA=1 python -m pytest tests/test_carla_live.py   # with a CARLA server
-EMBODIED_UI_UNITY="<path to Unity.exe>" python -m pytest tests/test_unity_live.py
+EMBODIED_UI_UNITY="<path to Unity.exe>" python -m pytest tests/test_unity_live.py \
+  tests/test_unity_editor_live.py tests/test_unity_sample_live.py tests/test_unity_player_live.py
 ```
 
 ## Licence

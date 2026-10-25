@@ -28,7 +28,8 @@ namespace EmbodiedUI.Editor
         {
             var meshes = new List<Attachment>();
             var manifest = ManifestBuilder.Build(reference, meshes);
-            var folder = Path.GetDirectoryName(path);
+            var folder = Path.GetDirectoryName(Path.GetFullPath(path));
+            Directory.CreateDirectory(folder);
             foreach (var mesh in meshes)
             {
                 var file = Path.Combine(folder, mesh.Name);

@@ -31,3 +31,7 @@ unity/EmbodiedUITests/*.slnx
 unity/EmbodiedUITests/.vscode/
 unity/EmbodiedUITests/Assets/Resources*
 unity/EmbodiedUITests/Assets/InitTestScene*
+# Copies made by the live Unity tests (sample import, player scene, builds).
+unity/EmbodiedUITests/Assets/Samples*
+unity/EmbodiedUITests/Assets/Generated*
+unity/EmbodiedUITests/Builds/

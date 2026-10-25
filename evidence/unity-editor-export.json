@@ -1,0 +1,36 @@
+{
+  "editmode": {
+    "DuplicateDeviceNamesAreRejected": "Passed",
+    "ExportWritesTheScenesDevicesAndMeshes": "Passed",
+    "PosesAreInWorldCoordinatesWithoutAReference": "Passed",
+    "TheMenuItemCallsTheExportRoutine": "Passed"
+  },
+  "manifest_name": "untitled",
+  "devices": [
+    "hazard_lamp",
+    "screen",
+    "start",
+    "volume"
+  ],
+  "start_pose_flu": [
+    0.4000001549720764,
+    4.768372718899627e-08,
+    0.5
+  ],
+  "cap_box_half_sizes_m": [
+    0.003000022270000042,
+    0.007499996133004141,
+    0.007500022880000001
+  ],
+  "lamp_sphere_radius_m": 0.0100033446958025,
+  "probe_events": [
+    [
+      "start",
+      "press"
+    ],
+    [
+      "start",
+      "release"
+    ]
+  ]
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="1" result="Passed" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.6977075">
+  <test-suite type="TestSuite" id="1015" name="EmbodiedUITests" fullname="EmbodiedUITests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.697708" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="PlayMode" />
+    </properties>
+    <test-suite type="Assembly" id="1003" name="EmbodiedUI.Samples.WheelVehicle.Tests.dll" fullname="C:/Users/localadmin/Desktop/embodied-ui/unity/EmbodiedUITests/Library/ScriptAssemblies/EmbodiedUI.Samples.WheelVehicle.Tests.dll" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.691496" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="24176" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="PlayMode" />
+        <property name="EditorOnly" value="False" />
+      </properties>
+      <test-suite type="TestSuite" id="1004" name="EmbodiedUI" fullname="EmbodiedUI" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.691060" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-suite type="TestSuite" id="1005" name="Samples" fullname="EmbodiedUI.Samples" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.690871" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <test-suite type="TestSuite" id="1006" name="Tests" fullname="EmbodiedUI.Samples.Tests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.690693" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-suite type="TestFixture" id="1001" name="WheelVehicleTests" fullname="EmbodiedUI.Samples.Tests.WheelVehicleTests" classname="EmbodiedUI.Samples.Tests.WheelVehicleTests" runstate="Runnable" testcasecount="1" result="Passed" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.689923" total="1" passed="1" failed="0" inconclusive="0" skipped="0" asserts="0">
+              <properties />
+              <test-case id="1002" name="PythonClientDrivesTheWheelVehicle" fullname="EmbodiedUI.Samples.Tests.WheelVehicleTests.PythonClientDrivesTheWheelVehicle" methodname="PythonClientDrivesTheWheelVehicle" classname="EmbodiedUI.Samples.Tests.WheelVehicleTests" runstate="Runnable" seed="651025356" result="Passed" start-time="2026-10-25 13:42:14Z" end-time="2026-10-25 13:42:15Z" duration="0.681997" asserts="0">
+                <properties>
+                  <property name="_JOINTYPE" value="UnityCombinatorial" />
+                  <property name="Timeout" value="900000" />
+                  <property name="retryIteration" value="0" />
+                  <property name="repeatIteration" value="0" />
+                </properties>
+                <output><![CDATA[Embodied UI listening on 127.0.0.1:47476
+[EmbodiedUI sample] the Python session ended after 399 frames
+Saving results to: C:\Users\localadmin\AppData\Local\Temp\claude\C--Users-localadmin-Desktop-myosuite-carla\9754bb14-51dd-4c1f-b96a-324af367e141\scratchpad\pt-final\test_python_drives_the_wheel_v0\playmode.xml
+]]></output>
+              </test-case>
+            </test-suite>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

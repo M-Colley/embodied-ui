@@ -1,0 +1,25 @@
+{
+  "unity": "6000.6.7f1",
+  "mode": "windowed",
+  "graphics_device": "Direct3D12",
+  "build_seconds": null,
+  "frames": 100,
+  "delta_time_s": [
+    0.019999992102384567,
+    0.019999992102384567
+  ],
+  "physics_steps_per_frame": [
+    1.0
+  ],
+  "throttle_input_min_while_pressed": 1.0,
+  "max_speed_mps": 5.731517791748047,
+  "lamp_on_while_pressed": true,
+  "camera_shape": [
+    48,
+    64,
+    3
+  ],
+  "camera_pixel_std": 34.17296735755006,
+  "lockstep_frames_per_wall_second": 60.687856803993526,
+  "player_exit_code": 0
+}

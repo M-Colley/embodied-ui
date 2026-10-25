@@ -6,6 +6,13 @@
 - Each output component in its own file, so it can be added in the
   Inspector and restored from saved scenes.
 - Declares the audio module dependency.
+- Manifest export names an unsaved scene's interface `untitled`; an empty
+  name could not be loaded in Python. `ManifestExporter.Export` creates the
+  target folder.
+- EditMode tests of the manifest exporter (`Tests/Editor`).
+- The Wheel Vehicle sample has its own assembly definition,
+  `EmbodiedUI.Samples.WheelVehicle`, so tests and other assemblies can
+  reference it.
 
 ## 0.1.0
 

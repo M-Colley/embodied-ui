@@ -148,12 +148,14 @@ namespace EmbodiedUI
                     throw new System.ArgumentException("duplicate device name " + device.deviceName);
                 list.Add(device.ToManifest(reference, meshes));
             }
+            // An unsaved scene has an empty name, which Python's Interface rejects.
+            var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
             return new JObject
             {
                 ["format"] = "embodied-ui/manifest",
                 ["version"] = 1,
                 ["frame"] = "unity",
-                ["name"] = name ?? EmbodiedInputDevice.ControlName(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name),
+                ["name"] = name ?? EmbodiedInputDevice.ControlName(string.IsNullOrEmpty(scene) ? "untitled" : scene),
                 ["devices"] = list,
             };
         }

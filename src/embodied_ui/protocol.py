@@ -125,7 +125,7 @@ def send_message(
         sock, json.dumps(payload, allow_nan=False, separators=(",", ":")).encode()
     )
     for array in arrays:
-        _send_frame(sock, memoryview(array).cast("B"))
+        _send_frame(sock, array.data.cast("B"))
 
 
 def receive_message(

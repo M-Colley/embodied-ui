@@ -1,0 +1,16 @@
+{
+  "frames": 400,
+  "delta_time_s": [
+    0.019999992102384567,
+    0.019999992102384567
+  ],
+  "speed_after_accelerating_mps": 8.806458473205566,
+  "heading_change_while_accelerating_deg": 0.0,
+  "heading_change_while_turning_deg": 67.29049762890206,
+  "speed_after_turning_mps": 10.48487377166748,
+  "mean_deceleration_first_0_5_s_mps2": 3.8587490717569985,
+  "final_speed_mps": 0.0006276611820794642,
+  "playmode": {
+    "PythonClientDrivesTheWheelVehicle": "Passed"
+  }
+}
