@@ -432,3 +432,10 @@ buttons.
   - Learned or reflex control, the other devices (knobs, switches, touch
     surfaces) and an unbraced wrist have not been shown.
   - The hand test was run on MuJoCo 3.17.0 only.
+
+## 2026-10-26: Python 3.14
+
+A fresh Python 3.14.4 environment (uv) with `pip install -e ".[test,lint]"`
+passed 75 tests and skipped 7: the live CARLA, Unity and MyoSuite-hand
+tests that CI also skips. Ruff, mypy and the build pass. The CI workflow
+now also runs on Python 3.14.
