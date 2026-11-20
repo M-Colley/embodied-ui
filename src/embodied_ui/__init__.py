@@ -40,8 +40,15 @@ from .frames import (
 )
 from .geometry import Box, Capsule, Cylinder, Mesh, Part, Sphere
 from .interface import Contacts, Interface
+from .layout import PanelLayout, panel_pose
 from .logic import Event, Interlock
 from .mechanics import Axis, Detents, ForceCurve, Servo
+from .motion import (
+    MotionSample,
+    MotionTrajectory,
+    extract_motion_sample,
+    extract_motion_trajectory,
+)
 from .runtime import InterfaceRuntime, Reading, merge_readings
 from .trace import TraceRecorder
 
@@ -73,6 +80,9 @@ __all__ = [
     "Lever",
     "MYOSUITE_SEATED",
     "Mesh",
+    "MotionSample",
+    "MotionTrajectory",
+    "PanelLayout",
     "Part",
     "Pedal",
     "Pose",
@@ -91,6 +101,9 @@ __all__ = [
     "UNITY",
     "UNREAL",
     "Vibrotactor",
+    "extract_motion_sample",
+    "extract_motion_trajectory",
     "merge_readings",
+    "panel_pose",
     "register",
 ]

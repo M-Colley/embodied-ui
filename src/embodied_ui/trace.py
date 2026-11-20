@@ -113,6 +113,25 @@ class TraceRecorder:
                 writer.writerow([row.get(c, "") for c in columns])
         return path
 
+    def motion_trajectory(
+        self,
+        *,
+        prefix: str = "vehicle",
+        engine_frame: Any = None,
+        model_frame: Any = "flu",
+        in_body_frame: bool = True,
+    ) -> Any:
+        """Extract a ``MotionTrajectory`` from the recorded frames."""
+        from .motion import extract_motion_trajectory
+
+        return extract_motion_trajectory(
+            self.frames,
+            prefix=prefix,
+            engine_frame=engine_frame,
+            model_frame=model_frame,
+            in_body_frame=in_body_frame,
+        )
+
 
 def _numeric(value: Any) -> float | list[float] | None:
     if isinstance(value, (bool, int, float, np.integer, np.floating)):
