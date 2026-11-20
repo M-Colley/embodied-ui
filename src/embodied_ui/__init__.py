@@ -49,6 +49,15 @@ from .motion import (
     extract_motion_sample,
     extract_motion_trajectory,
 )
+from .optimization import (
+    DEFAULT_ERGONOMIC_OBJECTIVES,
+    ErgonomicRolloutMetrics,
+    LayoutCandidate,
+    LayoutOptimizationHarness,
+    LayoutSpace,
+    ObjectiveBound,
+    ParameterBound,
+)
 from .runtime import InterfaceRuntime, Reading, merge_readings
 from .trace import TraceRecorder
 
@@ -62,9 +71,11 @@ __all__ = [
     "Contacts",
     "Control",
     "Cylinder",
+    "DEFAULT_ERGONOMIC_OBJECTIVES",
     "DEVICE_TYPES",
     "Detents",
     "Device",
+    "ErgonomicRolloutMetrics",
     "Event",
     "FLU",
     "FRAMES",
@@ -77,12 +88,17 @@ __all__ = [
     "Interlock",
     "Joystick",
     "Knob",
+    "LayoutCandidate",
+    "LayoutOptimizationHarness",
+    "LayoutSpace",
     "Lever",
     "MYOSUITE_SEATED",
     "Mesh",
     "MotionSample",
     "MotionTrajectory",
+    "ObjectiveBound",
     "PanelLayout",
+    "ParameterBound",
     "Part",
     "Pedal",
     "Pose",
